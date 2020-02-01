@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Денис Кунин](https://up.htmlacademy.ru/javascript/19/user/563119).
-* Наставник: `Неизвестно`.
+* Наставник: [Денис Байдаров](https://up.htmlacademy.ru/adaptive/18/user/7956).
 
 ---
 
