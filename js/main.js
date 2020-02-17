@@ -10,6 +10,7 @@ var pinsContainer = document.querySelector('.map__pins');
 var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
 var pin = document.querySelector('.map__pin');
 var fragment = document.createDocumentFragment();
+var map = document.querySelector('.map');
 
 var randomizeNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -90,6 +91,8 @@ var renderPins = function (arr) {
   }
   pinsContainer.appendChild(fragment);
 };
+
+map.classList.remove('map--faded');
 
 var offersArr = createOffer(NUMBER_OF_OFFERS);
 
