@@ -5,6 +5,16 @@ var NUMBER_OF_OFFERS = 8;
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var TIME = ['12:00', '13:00', '14:00'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var MIN_Y_POSITION = 130;
+var MAX_Y_POSITION = 630;
+var MIN_PRICE = 1000;
+var MAX_PRICE = 5000;
+var MIN_ROOMS = 1;
+var MAX_ROOMS = 5;
+var MIN_GUESTS = 1;
+var MAX_GUESTS = 10;
+var FIRST_AVATAR_NUMBER = 1;
+var LAST_AVATAR_NUMBER = 8;
 
 var pinsContainer = document.querySelector('.map__pins');
 var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -22,14 +32,17 @@ var randomizeArrElevent = function (arr) {
 };
 
 var randomizeArr = function (arr) {
-  var NewArr = arr.slice();
-  for (var i = Math.floor(Math.random() * (NewArr.length + 1)); i < arr.length; i++) {
-    NewArr.splice(Math.floor(Math.random() * NewArr.length), 1);
-    if (NewArr.length === 1) {
-      break;
-    }
+  var newArr = arr.slice();
+  var randomIndex;
+  var sortedElement;
+  for (var i = newArr.length - 1; i > 0; i--) {
+    randomIndex = Math.floor(Math.random() * (i + 1));
+    sortedElement = newArr[randomIndex];
+    newArr[randomIndex] = newArr[i];
+    newArr[i] = sortedElement;
   }
-  return NewArr;
+  newArr.length = randomizeNumber(1, newArr.length + 1);
+  return newArr;
 };
 
 var createAvatarsList = function (firstAvatar, lastAvatar) {
@@ -45,18 +58,18 @@ var createOffer = function (amountOfOffers) {
   var offers = [];
   for (var i = 0; i < amountOfOffers; i++) {
     var locationX = randomizeNumber(0 + pin.offsetWidth / 2, pinsContainer.clientWidth - pin.offsetWidth / 2);
-    var locationY = randomizeNumber(130, 630);
+    var locationY = randomizeNumber(MIN_Y_POSITION, MAX_Y_POSITION);
     offer = {
       'author': {
-        avatar: randomizeArrElevent(createAvatarsList(1, 8))
+        avatar: randomizeArrElevent(createAvatarsList(FIRST_AVATAR_NUMBER, LAST_AVATAR_NUMBER))
       },
       'offer': {
         title: 'Сдается жилье',
         address: '"' + locationX + ', ' + locationY + '"',
-        price: randomizeNumber(1000, 5000),
+        price: randomizeNumber(MIN_PRICE, MAX_PRICE),
         type: randomizeArrElevent(TYPE),
-        rooms: randomizeNumber(1, 5),
-        guests: randomizeNumber(1, 10),
+        rooms: randomizeNumber(MIN_ROOMS, MAX_ROOMS),
+        guests: randomizeNumber(MIN_GUESTS, MAX_GUESTS),
         checkin: randomizeArrElevent(TIME),
         checkout: randomizeArrElevent(TIME),
         features: randomizeArr(FEATURES),
