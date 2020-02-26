@@ -15,6 +15,11 @@ var MIN_GUESTS = 1;
 var MAX_GUESTS = 10;
 var FIRST_AVATAR_NUMBER = 1;
 var LAST_AVATAR_NUMBER = 8;
+var MAIN_MOUSE_BUTTON = 0;
+var ENTER_KEY = 'Enter';
+var MAIN_MAP_PIN_HEIGHT_WITH_MARKER = 84;
+var MAXIMUM_ROOMS = 100;
+var NOT_FOR_GUESTS_CAPACITY = 0;
 
 var pinsContainer = document.querySelector('.map__pins');
 var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -105,8 +110,62 @@ var renderPins = function (arr) {
   pinsContainer.appendChild(fragment);
 };
 
-map.classList.remove('map--faded');
-
 var offersArr = createOffer(NUMBER_OF_OFFERS);
 
-renderPins(offersArr);
+var form = document.querySelector('.ad-form');
+var fieldsGroups = form.querySelectorAll('fieldset');
+var mainMapPin = document.querySelector('.map__pin--main');
+var addressField = form.querySelector('[name="address"]');
+var roomsField = form.querySelector('[name="rooms"]');
+var capacityField = form.querySelector('[name="capacity"]');
+
+var disablePage = function () {
+  form.classList.add('ad-form--disabled');
+  map.classList.add('map--faded');
+  Array.prototype.forEach.call(fieldsGroups, function (elem) {
+    elem.setAttribute('disabled', '');
+  });
+  addressField.value = Math.round(mainMapPin.offsetLeft + mainMapPin.offsetWidth / 2) + ', ' + Math.round(mainMapPin.offsetTop + mainMapPin.offsetHeight / 2);
+};
+
+var activatePage = function () {
+  form.classList.remove('ad-form--disabled');
+  map.classList.remove('map--faded');
+  Array.prototype.forEach.call(fieldsGroups, function (elem) {
+    elem.removeAttribute('disabled');
+  });
+  addressField.value = Math.round(mainMapPin.offsetLeft + mainMapPin.offsetWidth / 2) + ', ' + Math.round(mainMapPin.offsetTop + MAIN_MAP_PIN_HEIGHT_WITH_MARKER);
+  renderPins(offersArr);
+};
+
+var onFormChangeValidation = function () {
+  var capacityFieldValue = Number(capacityField.value);
+  var roomsFieldValue = Number(roomsField.value);
+  if (capacityFieldValue > roomsFieldValue) {
+    capacityField.setCustomValidity('Гостей должно быть не больше количества комнат');
+  } else if (roomsFieldValue < MAXIMUM_ROOMS && capacityFieldValue === NOT_FOR_GUESTS_CAPACITY) {
+    capacityField.setCustomValidity('Необходимо указать количество гостей');
+  } else if (roomsFieldValue === MAXIMUM_ROOMS && capacityFieldValue > NOT_FOR_GUESTS_CAPACITY) {
+    capacityField.setCustomValidity('Жилье от 100 комнат сдается только не для гостей');
+  } else {
+    capacityField.setCustomValidity('');
+  }
+};
+
+disablePage();
+
+mainMapPin.addEventListener('mousedown', function (evt) {
+  if (evt.button === MAIN_MOUSE_BUTTON) {
+    activatePage();
+  }
+});
+
+mainMapPin.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    activatePage();
+  }
+});
+
+form.addEventListener('change', function () {
+  onFormChangeValidation();
+});
