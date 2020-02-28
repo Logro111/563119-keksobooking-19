@@ -36,7 +36,7 @@ var randomizeArrElevent = function (arr) {
   return arr[randomNumber];
 };
 
-var randomizeArr = function (arr) {
+var sortArr = function (arr) {
   var newArr = arr.slice();
   var randomIndex;
   var sortedElement;
@@ -46,8 +46,11 @@ var randomizeArr = function (arr) {
     newArr[randomIndex] = newArr[i];
     newArr[i] = sortedElement;
   }
-  newArr.length = randomizeNumber(1, newArr.length + 1);
   return newArr;
+};
+
+var randomizeArrLength = function (arr) {
+  sortArr(arr).length = randomizeNumber(1, sortArr(arr).length + 1);
 };
 
 var createAvatarsList = function (firstAvatar, lastAvatar) {
@@ -58,15 +61,25 @@ var createAvatarsList = function (firstAvatar, lastAvatar) {
   return avatarsList;
 };
 
+var selectArrElement = function (arr, counter) {
+  if (counter >= arr.length) {
+    counter = 0;
+  }
+  var element = arr[counter];
+  counter++;
+  return element;
+};
+
 var createOffer = function (amountOfOffers) {
   var offer;
   var offers = [];
+  var authorsAvatars = sortArr(createAvatarsList(FIRST_AVATAR_NUMBER, LAST_AVATAR_NUMBER));
   for (var i = 0; i < amountOfOffers; i++) {
     var locationX = randomizeNumber(0 + pin.offsetWidth / 2, pinsContainer.clientWidth - pin.offsetWidth / 2);
     var locationY = randomizeNumber(MIN_Y_POSITION, MAX_Y_POSITION);
     offer = {
       'author': {
-        avatar: randomizeArrElevent(createAvatarsList(FIRST_AVATAR_NUMBER, LAST_AVATAR_NUMBER))
+        avatar: selectArrElement(authorsAvatars, i)
       },
       'offer': {
         title: 'Сдается жилье',
@@ -77,9 +90,9 @@ var createOffer = function (amountOfOffers) {
         guests: randomizeNumber(MIN_GUESTS, MAX_GUESTS),
         checkin: randomizeArrElevent(TIME),
         checkout: randomizeArrElevent(TIME),
-        features: randomizeArr(FEATURES),
+        features: randomizeArrLength(FEATURES),
         description: 'Сдается жилье',
-        photos: randomizeArr(PHOTOS)
+        photos: randomizeArrLength(PHOTOS)
       },
 
       'location': {
@@ -113,6 +126,9 @@ var renderPins = function (arr) {
 var offersArr = createOffer(NUMBER_OF_OFFERS);
 
 var form = document.querySelector('.ad-form');
+var filterForm = document.querySelector('.map__filters');
+var filterfieldsGroups = filterForm.querySelectorAll('fieldset');
+var filterSelects = filterForm.querySelectorAll('select');
 var fieldsGroups = form.querySelectorAll('fieldset');
 var mainMapPin = document.querySelector('.map__pin--main');
 var addressField = form.querySelector('[name="address"]');
@@ -122,9 +138,19 @@ var capacityField = form.querySelector('[name="capacity"]');
 var disablePage = function () {
   form.classList.add('ad-form--disabled');
   map.classList.add('map--faded');
+
   Array.prototype.forEach.call(fieldsGroups, function (elem) {
     elem.setAttribute('disabled', '');
   });
+
+  Array.prototype.forEach.call(filterfieldsGroups, function (elem) {
+    elem.setAttribute('disabled', '');
+  });
+
+  Array.prototype.forEach.call(filterSelects, function (elem) {
+    elem.setAttribute('disabled', '');
+  });
+
   addressField.value = Math.round(mainMapPin.offsetLeft + mainMapPin.offsetWidth / 2) + ', ' + Math.round(mainMapPin.offsetTop + mainMapPin.offsetHeight / 2);
 };
 
@@ -134,6 +160,15 @@ var activatePage = function () {
   Array.prototype.forEach.call(fieldsGroups, function (elem) {
     elem.removeAttribute('disabled');
   });
+
+  Array.prototype.forEach.call(filterfieldsGroups, function (elem) {
+    elem.removeAttribute('disabled', '');
+  });
+
+  Array.prototype.forEach.call(filterSelects, function (elem) {
+    elem.removeAttribute('disabled', '');
+  });
+
   addressField.value = Math.round(mainMapPin.offsetLeft + mainMapPin.offsetWidth / 2) + ', ' + Math.round(mainMapPin.offsetTop + MAIN_MAP_PIN_HEIGHT_WITH_MARKER);
   renderPins(offersArr);
 };
