@@ -6,9 +6,11 @@
 
   mainMapPin.addEventListener('mousedown', function (evt) {
     window.util.isMainMouseButtonEvent(evt, window.main.activate);
-  });
+  },
+  {once: true});
 
   mainMapPin.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, window.main.activate);
-  });
+  },
+  {once: true});
 })();

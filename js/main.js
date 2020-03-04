@@ -48,7 +48,8 @@
     deactivateFormFields(filterSelects);
 
     addressField.value = Math.round(mainMapPin.offsetLeft + mainMapPin.offsetWidth / 2) + ', ' + Math.round(mainMapPin.offsetTop + MAIN_MAP_PIN_HEIGHT_WITH_MARKER);
-    window.pin.renderPins(window.data);
+
+    window.pin.renderPins(window.data.createOffer(window.data.offersNumber));
   };
 
   disablePage();
