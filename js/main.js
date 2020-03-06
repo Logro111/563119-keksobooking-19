@@ -49,7 +49,7 @@
 
     addressField.value = Math.round(mainMapPin.offsetLeft + mainMapPin.offsetWidth / 2) + ', ' + Math.round(mainMapPin.offsetTop + MAIN_MAP_PIN_HEIGHT_WITH_MARKER);
 
-    window.pin.renderPins(window.data.createOffer(window.data.offersNumber));
+    window.backend.load(window.pin.renderPins, window.onError);
   };
 
   disablePage();
