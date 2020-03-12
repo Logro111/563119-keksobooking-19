@@ -17,7 +17,12 @@
   };
 
   var renderPins = function (arr) {
-    for (var i = 0; i < window.data.offersNumber; i++) {
+    if (document.querySelectorAll('.map__pin:not(.map__pin--main)')) {
+      document.querySelectorAll('.map__pin:not(.map__pin--main)').forEach(function (elem) {
+        elem.remove();
+      });
+    }
+    for (var i = 0; i < arr.length; i++) {
       fragment.appendChild(renderPin(arr[i]));
     }
     pinsContainer.appendChild(fragment);
