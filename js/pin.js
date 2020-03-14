@@ -2,7 +2,8 @@
 
 (function () {
   var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
-  var pin = document.querySelector('.map__pin');
+  var PIN_WIDTH = 50;
+  var PIN_HEIGHT = 70;
   var pinsContainer = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
 
@@ -10,9 +11,8 @@
     var newPin = templatePin.cloneNode(true);
     newPin.querySelector('img').setAttribute('src', offersElement.author.avatar);
     newPin.querySelector('img').setAttribute('alt', offersElement.offer.title);
-    newPin.style.left = offersElement.location.x - pin.offsetWidth / 2 + 'px';
-    newPin.style.top = offersElement.location.y - pin.offsetHeight + 'px';
-
+    newPin.style.left = offersElement.location.x - PIN_WIDTH / 2 + 'px';
+    newPin.style.top = offersElement.location.y - PIN_HEIGHT + 'px';
     return newPin;
   };
 
