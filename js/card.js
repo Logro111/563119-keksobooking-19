@@ -56,17 +56,14 @@
 
     if (cardsArrElem.offer.features && cardsArrElem.offer.features.length !== 0) {
       features.forEach(function (list) {
-        var counter = 0;
+        list.style.display = 'none';
         var listClassValue = list.getAttribute('class');
-        listClassValue = listClassValue.slice(listClassValue.indexOf('--') + 2);
+
         cardsArrElem.offer.features.forEach(function (element) {
-          if (element === listClassValue) {
-            counter += 1;
+          if (listClassValue.includes('-' + element)) {
+            list.removeAttribute('style');
           }
         });
-        if (!counter) {
-          list.setAttribute('style', 'display: none');
-        }
       });
     } else {
       featuresContainer.style.display = 'none';
@@ -87,7 +84,7 @@
     }
 
     if (cardsArrElem.author && cardsArrElem.author.avatar) {
-      avatar.setAttribute = cardsArrElem.author.avatar;
+      avatar.src = cardsArrElem.author.avatar;
     }
 
     filtersContainer.before(newCard);
