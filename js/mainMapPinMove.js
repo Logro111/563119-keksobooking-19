@@ -48,11 +48,11 @@
     };
 
     var onMouseUp = function () {
-      pinsContainer.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
     };
 
-    pinsContainer.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
   };
 
