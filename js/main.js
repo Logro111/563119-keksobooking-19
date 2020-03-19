@@ -10,9 +10,9 @@
   var filterSelects = filterForm.querySelectorAll('select');
   var fieldsGroups = form.querySelectorAll('fieldset');
   var mainMapPin = document.querySelector('.map__pin--main');
-  var addressField = form.querySelector('[name="address"]');
   var loadedPins = [];
   var filterTypeField = filterForm.querySelector('[name="housing-type"]');
+  var mainMapPinCenterY = Math.round(mainMapPin.offsetTop + mainMapPin.offsetHeight / 2);
 
   var activateFormFields = function (fields) {
     Array.prototype.forEach.call(fields, function (elem) {
@@ -36,7 +36,7 @@
 
     deactivateFormFields(filterSelects);
 
-    addressField.value = Math.round(mainMapPin.offsetLeft + mainMapPin.offsetWidth / 2) + ', ' + Math.round(mainMapPin.offsetTop + mainMapPin.offsetHeight / 2);
+    window.mainMapPinMove.setAddress(mainMapPinCenterY);
   };
 
   var onLoadSuccess = function (data) {
@@ -52,7 +52,7 @@
 
     activateFormFields(fieldsGroups);
 
-    addressField.value = Math.round(mainMapPin.offsetLeft + mainMapPin.offsetWidth / 2) + ', ' + Math.round(mainMapPin.offsetTop + MAIN_MAP_PIN_HEIGHT_WITH_MARKER);
+    window.mainMapPinMove.setAddress(mainMapPin.offsetTop + MAIN_MAP_PIN_HEIGHT_WITH_MARKER);
 
     window.backend.createHttpRequest(onLoadSuccess, window.onError, 'Ошибка загрузки', window.backend.loadURL, 'GET');
   };
