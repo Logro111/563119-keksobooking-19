@@ -3,13 +3,40 @@
 (function () {
   var templateCard = document.querySelector('#card').content.querySelector('.map__card');
   var filtersContainer = document.querySelector('.map__filters-container');
-  var houseTypeValuesMap = {
+  var objHouseTypeToCardField = {
     'flat': 'Квартира',
     'bungalo': 'Бунгало',
     'house': 'Дом',
     'palace': 'Дворец',
     '': ''
   };
+
+  var selectRoomsWordEnding = function (num) {
+    var ending = '';
+    var newNum = String(num).slice(-2);
+    if (newNum < 10 || newNum > 15) {
+      newNum = Number(String(num).slice(-1));
+      if (newNum === 1) {
+        ending = 'а';
+      } else if (newNum > 1 && newNum <= 4) {
+        ending = 'ы';
+      }
+    }
+    return ' комнат' + ending + ' для ';
+  };
+
+  var selectGuestsWordEnding = function (num) {
+    var ending = 'ей';
+    var newNum = String(num).slice(-2);
+    if (newNum !== '11') {
+      newNum = String(num).slice(-1);
+      if (newNum === '1') {
+        ending = 'я';
+      }
+    }
+    return ' гост' + ending;
+  };
+
 
   var setFieldValue = function (objectfield, field, fieldValue) {
     if (objectfield) {
@@ -18,6 +45,13 @@
       field.style.display = 'none';
     }
   };
+
+  var removeCard = function () {
+    if (document.querySelector('.map__card')) {
+      document.querySelector('.map__card').remove();
+    }
+  };
+
 
   var renderCard = function (cardsArrElem) {
     var newCard = templateCard.cloneNode(true);
@@ -35,9 +69,7 @@
     var avatar = newCard.querySelector('.popup__avatar');
     window.card.closeButton = newCard.querySelector('.popup__close');
 
-    if (document.querySelector('.map__card')) {
-      document.querySelector('.map__card').remove();
-    }
+    removeCard();
 
     setFieldValue(cardsArrElem.offer.title, title, cardsArrElem.offer.title);
 
@@ -47,9 +79,16 @@
 
     setFieldValue(cardsArrElem.offer.price, price, cardsArrElem.offer.price + '₽/ночь');
 
-    setFieldValue(cardsArrElem.offer.type, houseType, houseTypeValuesMap[cardsArrElem.offer.type]);
+    setFieldValue(cardsArrElem.offer.type, houseType, objHouseTypeToCardField[cardsArrElem.offer.type]);
 
-    setFieldValue((cardsArrElem.offer.rooms && cardsArrElem.offer.guests), capacity, cardsArrElem.offer.rooms + ' комнаты для ' + cardsArrElem.offer.guests + ' гостей');
+
+    if (cardsArrElem.offer.rooms && cardsArrElem.offer.guests === 0) {
+      capacity.textContent = cardsArrElem.offer.rooms + selectRoomsWordEnding(cardsArrElem.offer.rooms) + ' не для гостей';
+    } else if (cardsArrElem.offer.rooms && cardsArrElem.offer.guests) {
+      capacity.textContent = cardsArrElem.offer.rooms + selectRoomsWordEnding(cardsArrElem.offer.rooms) + cardsArrElem.offer.guests + selectGuestsWordEnding(cardsArrElem.offer.guests);
+    } else {
+      capacity.style.display = 'none';
+    }
 
     setFieldValue((cardsArrElem.offer.checkin && cardsArrElem.offer.checkout), time, 'Заезд после ' + cardsArrElem.offer.checkin + ', выезд до ' + cardsArrElem.offer.checkout);
 
@@ -92,6 +131,7 @@
 
   window.card = {
     render: renderCard,
-    houseTypeValuesMap: houseTypeValuesMap
+    objHouseTypeToCardField: objHouseTypeToCardField,
+    remove: removeCard
   };
 })();

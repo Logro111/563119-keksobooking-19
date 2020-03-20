@@ -5,15 +5,21 @@
   var mainMapPin = document.querySelector('.map__pin--main');
   var pinsContainer = document.querySelector('.map__pins');
 
-  mainMapPin.addEventListener('mousedown', function (evt) {
+  var onMainMapPinMainMouseButtonPress = function (evt) {
     window.util.isMainMouseButtonEvent(evt, window.main.activate);
-  },
-  {once: true});
+  };
+
+  var onMainMapPinMainEnterPress = function (evt) {
+    window.util.isEnterEvent(evt, window.main.activate);
+  };
+
+  mainMapPin.addEventListener('mousedown', function (evt) {
+    window.main.checkPageStatus('disabled', onMainMapPinMainMouseButtonPress, evt);
+  });
 
   mainMapPin.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, window.main.activate);
-  },
-  {once: true});
+    window.main.checkPageStatus('disabled', onMainMapPinMainEnterPress, evt);
+  });
 
   var onCardEscPress = function (evt) {
     window.util.isEscEvent(evt, closeCard);

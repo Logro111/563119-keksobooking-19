@@ -4,11 +4,12 @@
   var TIMEOUT_IN_MS = 10000;
 
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
+  var SAVE_URL = 'https://js.dump.academy/keksobooking';
   var statusCodes = {
     OK: 200
   };
 
-  var createHttpRequest = function (onLoad, onError, mainErrorMessage, url, requestType, data) {
+  var createHttpRequest = function (onLoad, onError, url, requestType, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -21,7 +22,7 @@
     });
 
     xhr.addEventListener('error', function () {
-      onError(mainErrorMessage);
+      onError('Ошибка загрузки');
     });
 
     xhr.addEventListener('timeout', function () {
@@ -36,6 +37,7 @@
 
   window.backend = {
     loadURL: LOAD_URL,
+    saveURL: SAVE_URL,
     createHttpRequest: createHttpRequest
   };
 })();
