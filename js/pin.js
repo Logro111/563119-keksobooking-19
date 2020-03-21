@@ -41,11 +41,11 @@
 
   var renderPins = function (arr) {
     clearMap();
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].offer) {
-        fragment.appendChild(renderPin(arr[i], i));
+    arr.forEach(function (elem, index) {
+      if (elem.offer) {
+        fragment.appendChild(renderPin(elem, index));
       }
-    }
+    });
     pinsContainer.appendChild(fragment);
   };
 
