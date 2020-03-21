@@ -3,7 +3,7 @@
 (function () {
   var templateCard = document.querySelector('#card').content.querySelector('.map__card');
   var filtersContainer = document.querySelector('.map__filters-container');
-  var houseTypeValuesMap = {
+  var objHouseTypeToCardField = {
     'flat': 'Квартира',
     'bungalo': 'Бунгало',
     'house': 'Дом',
@@ -18,6 +18,13 @@
       field.style.display = 'none';
     }
   };
+
+  var removeCard = function () {
+    if (document.querySelector('.map__card')) {
+      document.querySelector('.map__card').remove();
+    }
+  };
+
 
   var renderCard = function (cardsArrElem) {
     var newCard = templateCard.cloneNode(true);
@@ -35,9 +42,7 @@
     var avatar = newCard.querySelector('.popup__avatar');
     window.card.closeButton = newCard.querySelector('.popup__close');
 
-    if (document.querySelector('.map__card')) {
-      document.querySelector('.map__card').remove();
-    }
+    removeCard();
 
     setFieldValue(cardsArrElem.offer.title, title, cardsArrElem.offer.title);
 
@@ -47,9 +52,16 @@
 
     setFieldValue(cardsArrElem.offer.price, price, cardsArrElem.offer.price + '₽/ночь');
 
-    setFieldValue(cardsArrElem.offer.type, houseType, houseTypeValuesMap[cardsArrElem.offer.type]);
+    setFieldValue(cardsArrElem.offer.type, houseType, objHouseTypeToCardField[cardsArrElem.offer.type]);
 
-    setFieldValue((cardsArrElem.offer.rooms && cardsArrElem.offer.guests), capacity, cardsArrElem.offer.rooms + ' комнаты для ' + cardsArrElem.offer.guests + ' гостей');
+
+    if (cardsArrElem.offer.rooms && cardsArrElem.offer.guests === 0) {
+      capacity.textContent = cardsArrElem.offer.rooms + window.util.getNoun(cardsArrElem.offer.rooms, ' комната ', ' комнаты ', ' комнат ') + ' не для гостей';
+    } else if (cardsArrElem.offer.rooms && cardsArrElem.offer.guests) {
+      capacity.textContent = cardsArrElem.offer.rooms + window.util.getNoun(cardsArrElem.offer.rooms, ' комната для ', ' комнаты для ', ' комнат для ') + cardsArrElem.offer.guests + window.util.getNoun(cardsArrElem.offer.guests, ' гостя', ' гостей', ' гостей');
+    } else {
+      capacity.style.display = 'none';
+    }
 
     setFieldValue((cardsArrElem.offer.checkin && cardsArrElem.offer.checkout), time, 'Заезд после ' + cardsArrElem.offer.checkin + ', выезд до ' + cardsArrElem.offer.checkout);
 
@@ -92,6 +104,7 @@
 
   window.card = {
     render: renderCard,
-    houseTypeValuesMap: houseTypeValuesMap
+    objHouseTypeToCardField: objHouseTypeToCardField,
+    remove: removeCard
   };
 })();

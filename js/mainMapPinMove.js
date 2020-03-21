@@ -17,6 +17,7 @@
   };
 
   var onMainMapPinMousedown = function (evt) {
+
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -59,7 +60,8 @@
   mainMapPin.addEventListener('mousedown', onMainMapPinMousedown);
 
   window.mainMapPinMove = {
-    setAddress: setAddress
+    setAddress: setAddress,
+    startPinPosition: {}
   };
 })();
 
