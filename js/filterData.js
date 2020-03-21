@@ -14,15 +14,9 @@
 
   var filterFeatures = function (offerElem) {
     var result = true;
-    for (var j = 0; j < features.length; j++) {
-      if (features[j].checked === true) {
-        result = false;
-        for (var i = 0; i < offerElem.offer.features.length; i++) {
-          if (features[j].value === offerElem.offer.features[i]) {
-            result = true;
-            break;
-          }
-        }
+    for (var i = 0; i < features.length; i++) {
+      if (features[i].checked) {
+        result = offerElem.offer.features.includes(features[i].value);
         if (!result) {
           break;
         }
@@ -52,9 +46,9 @@
     }
   };
 
-  var checkObjProperty = function (ObjProperty, action, arrElem, property, fieldType) {
+  var checkObjProperty = function (оbjProperty, action, arrElem, property, fieldType) {
     var result = false;
-    if (!(ObjProperty === undefined)) {
+    if (!(оbjProperty === undefined)) {
       result = action(arrElem, property, fieldType);
     }
     return result;

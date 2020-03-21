@@ -37,12 +37,16 @@
     }
   };
 
-  var houseTypeValidation = function () {
+  var setMinPrice = function () {
     var price = houseTypeToMinPice[houseTypeField.value];
     priceField.setAttribute('placeholder', price);
     priceField.setAttribute('min', price);
+  };
+
+  var houseTypeValidation = function () {
+    setMinPrice();
     if (priceField.validity.rangeUnderflow) {
-      priceField.setCustomValidity('Минимальная цена при заданном типе жилья ( ' + window.card.objHouseTypeToCardField[houseTypeField.value].toLowerCase() + ') - ' + price);
+      priceField.setCustomValidity('Минимальная цена при заданном типе жилья ( ' + window.card.objHouseTypeToCardField[houseTypeField.value].toLowerCase() + ') - ' + houseTypeToMinPice[houseTypeField.value]);
     } else if (priceField.validity.rangeOverflow) {
       priceField.setCustomValidity('Максимальная цена' + priceField.getAttribute('max'));
     } else {
@@ -76,11 +80,12 @@
     window.main.disable();
     window.pin.clearMap();
     window.card.remove();
-    mainMapPin.style.left = window.mainMapPinMove.startPinPosition.x + 'px';
-    mainMapPin.style.top = window.mainMapPinMove.startPinPosition.y + 'px';
+    mainMapPin.style.left = window.main.startMainPinPosition.x + 'px';
+    mainMapPin.style.top = window.main.startMainPinPosition.y + 'px';
     form.reset();
     filterForm.reset();
     addressField.value = window.main.disabledAddresValue;
+    setMinPrice();
   };
 
   form.addEventListener('change', function (evt) {
@@ -92,4 +97,8 @@
   formReset.addEventListener('click', function (evt) {
     window.main.checkPageStatus('activated', resetPage, evt);
   });
+
+  window.form = {
+    setMinPrice: setMinPrice
+  };
 })();

@@ -11,33 +11,6 @@
     '': ''
   };
 
-  var selectRoomsWordEnding = function (num) {
-    var ending = '';
-    var newNum = String(num).slice(-2);
-    if (newNum < 10 || newNum > 15) {
-      newNum = Number(String(num).slice(-1));
-      if (newNum === 1) {
-        ending = 'а';
-      } else if (newNum > 1 && newNum <= 4) {
-        ending = 'ы';
-      }
-    }
-    return ' комнат' + ending + ' для ';
-  };
-
-  var selectGuestsWordEnding = function (num) {
-    var ending = 'ей';
-    var newNum = String(num).slice(-2);
-    if (newNum !== '11') {
-      newNum = String(num).slice(-1);
-      if (newNum === '1') {
-        ending = 'я';
-      }
-    }
-    return ' гост' + ending;
-  };
-
-
   var setFieldValue = function (objectfield, field, fieldValue) {
     if (objectfield) {
       field.textContent = fieldValue;
@@ -83,9 +56,9 @@
 
 
     if (cardsArrElem.offer.rooms && cardsArrElem.offer.guests === 0) {
-      capacity.textContent = cardsArrElem.offer.rooms + selectRoomsWordEnding(cardsArrElem.offer.rooms) + ' не для гостей';
+      capacity.textContent = cardsArrElem.offer.rooms + window.util.getNoun(cardsArrElem.offer.rooms, ' комната ', ' комнаты ', ' комнат ') + ' не для гостей';
     } else if (cardsArrElem.offer.rooms && cardsArrElem.offer.guests) {
-      capacity.textContent = cardsArrElem.offer.rooms + selectRoomsWordEnding(cardsArrElem.offer.rooms) + cardsArrElem.offer.guests + selectGuestsWordEnding(cardsArrElem.offer.guests);
+      capacity.textContent = cardsArrElem.offer.rooms + window.util.getNoun(cardsArrElem.offer.rooms, ' комната для ', ' комнаты для ', ' комнат для ') + cardsArrElem.offer.guests + window.util.getNoun(cardsArrElem.offer.guests, ' гостя', ' гостей', ' гостей');
     } else {
       capacity.style.display = 'none';
     }

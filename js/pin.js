@@ -41,7 +41,6 @@
 
   var renderPins = function (arr) {
     clearMap();
-
     for (var i = 0; i < arr.length; i++) {
       if (arr[i].offer) {
         fragment.appendChild(renderPin(arr[i], i));
@@ -52,7 +51,9 @@
 
   window.pin = {
     renderPins: renderPins,
-    objectToPinMap: {},
+    objectToPinMap: {
+      'undefined': undefined
+    },
     clearMap: clearMap
   };
 })();

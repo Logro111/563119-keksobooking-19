@@ -59,6 +59,8 @@
 
     window.mainMapPinMove.setAddress(mainMapPin.offsetTop + MAIN_MAP_PIN_HEIGHT_WITH_MARKER);
 
+    window.form.setMinPrice();
+
     window.backend.createHttpRequest(onLoadSuccess, window.errorPopup.showLoadError, window.backend.loadURL, 'GET');
   };
 
@@ -70,7 +72,7 @@
 
   disablePage();
 
-  var renderPinsDebounce = window.debounce(window.pin.renderPins, RENDER_PINS_INTERVAL);
+  var renderPinsDebounce = window.util.debounce(window.pin.renderPins, RENDER_PINS_INTERVAL);
 
   filterForm.addEventListener('change', function () {
     renderPinsDebounce(window.filterData(loadedPins));
@@ -81,6 +83,10 @@
     activate: activatePage,
     disable: disablePage,
     checkPageStatus: checkPageStatus,
-    disabledAddresValue: addressField.value
+    disabledAddresValue: addressField.value,
+    startMainPinPosition: {
+      x: mainMapPin.offsetLeft,
+      y: mainMapPin.offsetTop
+    }
   };
 })();
