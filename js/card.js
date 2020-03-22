@@ -7,8 +7,7 @@
     'flat': 'Квартира',
     'bungalo': 'Бунгало',
     'house': 'Дом',
-    'palace': 'Дворец',
-    '': ''
+    'palace': 'Дворец'
   };
 
   var setFieldValue = function (objectfield, field, fieldValue) {

@@ -52,9 +52,7 @@
 
   window.pin = {
     renderPins: renderPins,
-    objectToPinMap: {
-      'undefined': undefined
-    },
+    objectToPinMap: {},
     clearMap: clearMap
   };
 })();
