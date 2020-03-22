@@ -15,6 +15,11 @@
   var mainMapPin = document.querySelector('.map__pin--main');
   var addressField = form.querySelector('[name="address"]');
   var filterForm = document.querySelector('.map__filters');
+  var formSubmitButton = form.querySelector('.ad-form__submit');
+  var avatarField = form.querySelector('.ad-form__field').querySelector('input');
+  var avatar = form.querySelector('.ad-form-header__preview').querySelector('img');
+  var housePhotoField = form.querySelector('.ad-form__upload').querySelector('input');
+  var housePhoto = form.querySelector('.ad-form__photo');
 
   var houseTypeToMinPice = {
     bungalo: 0,
@@ -63,16 +68,16 @@
     }
   };
 
-  var onFormChangeValidation = function (evt) {
-    capacityValidation();
+  var formValidation = function (evt) {
     houseTypeValidation();
+    capacityValidation();
     timeValidation(evt);
   };
 
   var onFormSubmit = function (evt) {
     evt.preventDefault();
     var data = new FormData(form);
-    window.backend.createHttpRequest(window.successPopup, window.errorPopup.showError, window.backend.saveURL, 'POST', data);
+    window.backend.createHttpRequest(window.successPopup, window.errorPopup.show, window.backend.saveURL, 'POST', data);
     resetPage();
   };
 
@@ -86,11 +91,31 @@
     filterForm.reset();
     addressField.value = window.main.disabledAddresValue;
     setMinPrice();
+    avatar.src = 'img/muffin-grey.svg';
+    housePhoto.removeAttribute('style');
   };
 
-  form.addEventListener('change', function (evt) {
-    onFormChangeValidation(evt);
-  });
+  var onFieldInput = function (evt) {
+    formValidation(evt);
+    if (evt.target.validity.valid) {
+      evt.target.style.outline = '';
+    } else {
+      evt.target.style.outline = '5px solid red';
+    }
+  };
+
+  var onFormSubmitButtonClick = function (evt) {
+    formValidation(evt);
+    form.querySelectorAll('.ad-form__element :invalid').forEach(function (elem) {
+      elem.removeEventListener('input', onFieldInput);
+      elem.style.outline = '5px solid red';
+      elem.addEventListener('input', onFieldInput);
+    });
+  };
+
+  form.addEventListener('change', formValidation);
+
+  formSubmitButton.addEventListener('click', onFormSubmitButtonClick);
 
   form.addEventListener('submit', onFormSubmit);
 
@@ -98,7 +123,11 @@
     window.main.checkPageStatus('activated', resetPage, evt);
   });
 
+  window.loadImg(avatarField, avatar);
+  window.loadImg(housePhotoField, housePhoto);
+
   window.form = {
-    setMinPrice: setMinPrice
+    setMinPrice: setMinPrice,
+    capacityValidation: capacityValidation
   };
 })();

@@ -1,9 +1,10 @@
 'use strict';
 
 (function () {
-  var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
+
+  var templatePin = document.querySelector('#pin').content.querySelector('.map__pin');
   var pinsContainer = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
 

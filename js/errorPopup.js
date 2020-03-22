@@ -37,7 +37,7 @@
   };
 
   window.errorPopup = {
-    showError: showError,
-    showLoadError: showLoadError
+    show: showError,
+    showLoad: showLoadError
   };
 })();

@@ -4,6 +4,7 @@
   var MAIN_MAP_PIN_HEIGHT_WITH_MARKER = 84;
   var MAIN_MAP_PIN_MIN_Y_COORDINATE = 130 - MAIN_MAP_PIN_HEIGHT_WITH_MARKER;
   var MAIN_MAP_PIN_MAX_Y_COORDINATE = 630 - MAIN_MAP_PIN_HEIGHT_WITH_MARKER;
+
   var mainMapPin = document.querySelector('.map__pin--main');
   var pinsContainer = document.querySelector('.map__pins');
   var form = document.querySelector('.ad-form');
