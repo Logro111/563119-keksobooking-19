@@ -28,7 +28,7 @@
     palace: 10000
   };
 
-  var capacityValidation = function () {
+  var validateCapacity = function () {
     var capacityFieldValue = Number(capacityField.value);
     var roomsFieldValue = Number(roomsField.value);
     if (capacityFieldValue > roomsFieldValue) {
@@ -48,7 +48,7 @@
     priceField.setAttribute('min', price);
   };
 
-  var houseTypeValidation = function () {
+  var validateHouseType = function () {
     setMinPrice();
     if (priceField.validity.rangeUnderflow) {
       priceField.setCustomValidity('Минимальная цена при заданном типе жилья ( ' + window.card.objHouseTypeToCardField[houseTypeField.value].toLowerCase() + ') - ' + houseTypeToMinPice[houseTypeField.value]);
@@ -59,7 +59,7 @@
     }
   };
 
-  var timeValidation = function (evt) {
+  var validateTime = function (evt) {
     if (evt.target === checkInField) {
       checkOutField.value = checkInField.value;
     }
@@ -68,10 +68,10 @@
     }
   };
 
-  var formValidation = function (evt) {
-    houseTypeValidation();
-    capacityValidation();
-    timeValidation(evt);
+  var validateForm = function (evt) {
+    validateHouseType();
+    validateCapacity();
+    validateTime(evt);
   };
 
   var onFormSubmit = function (evt) {
@@ -96,7 +96,7 @@
   };
 
   var onFieldInput = function (evt) {
-    formValidation(evt);
+    validateForm(evt);
     if (evt.target.validity.valid) {
       evt.target.style.outline = '';
     } else {
@@ -105,7 +105,7 @@
   };
 
   var onFormSubmitButtonClick = function (evt) {
-    formValidation(evt);
+    validateForm(evt);
     form.querySelectorAll('.ad-form__element :invalid').forEach(function (elem) {
       elem.removeEventListener('input', onFieldInput);
       elem.style.outline = '5px solid red';
@@ -113,7 +113,7 @@
     });
   };
 
-  form.addEventListener('change', formValidation);
+  form.addEventListener('change', validateForm);
 
   formSubmitButton.addEventListener('click', onFormSubmitButtonClick);
 
@@ -127,7 +127,6 @@
   window.loadImg(housePhotoField, housePhoto);
 
   window.form = {
-    setMinPrice: setMinPrice,
-    capacityValidation: capacityValidation
+    setMinPrice: setMinPrice
   };
 })();
