@@ -68,6 +68,24 @@
     }
   };
 
+  var invalidateField = function (formField) {
+    var field = formField.target;
+    if (!field) {
+      field = formField;
+    }
+    if (field.validity.valid) {
+      field.style.outline = '';
+    } else {
+      field.style.outline = '5px solid red';
+    }
+  };
+
+  var fieldNameToValidation = {
+    capacity: validateCapacity,
+    price: validateHouseType
+  };
+
+
   var validateForm = function (evt) {
     validateHouseType();
     validateCapacity();
@@ -99,24 +117,34 @@
   };
 
   var onFieldInput = function (evt) {
-    validateForm(evt);
-    if (evt.target.validity.valid) {
-      evt.target.style.outline = '';
-    } else {
-      evt.target.style.outline = '5px solid red';
+    if (fieldNameToValidation[evt.target.name]) {
+      fieldNameToValidation[evt.target.name]();
     }
+    invalidateField(evt);
   };
 
   var onFormSubmitButtonClick = function (evt) {
     validateForm(evt);
     form.querySelectorAll('.ad-form__element :invalid').forEach(function (elem) {
-      elem.removeEventListener('input', onFieldInput);
       elem.style.outline = '5px solid red';
+      elem.removeEventListener('input', onFieldInput);
       elem.addEventListener('input', onFieldInput);
     });
   };
 
-  form.addEventListener('change', validateForm);
+  var onFormChange = function (evt) {
+    validateForm(evt);
+    switch (evt.target) {
+      case houseTypeField:
+        invalidateField(priceField);
+        break;
+      case roomsField:
+        invalidateField(capacityField);
+        break;
+    }
+  };
+
+  form.addEventListener('change', onFormChange);
 
   formSubmitButton.addEventListener('click', onFormSubmitButtonClick);
 
