@@ -4,6 +4,7 @@
 
   var mainMapPin = document.querySelector('.map__pin--main');
   var pinsContainer = document.querySelector('.map__pins');
+  var lastPin;
 
   var onMainMapPinMainMouseButtonPress = function (evt) {
     window.util.isMainMouseButtonEvent(evt, window.main.activate);
@@ -27,45 +28,45 @@
     window.util.isEscEvent(evt, closeCard);
   };
 
+  var checkLastPin = function () {
+    if (lastPin) {
+      lastPin.classList.remove('map__pin--active');
+    }
+  };
+
   var closeCard = function () {
     document.querySelector('.map__card').remove();
     window.card.closeButton.removeEventListener('click', closeCard);
     document.removeEventListener('keydown', onCardEscPress);
-    document.querySelector('.map__pin--active').classList.remove('map__pin--active');
+    checkLastPin();
   };
 
-  var openCard = function () {
-    var lastPin;
-    return function (evt) {
-      var pinData;
 
-      if (evt.target.dataset.pinIndex || evt.target.parentNode.dataset.pinIndex) {
+  var openCard = function (evt) {
+    var pinData;
 
-        if (lastPin) {
-          lastPin.classList.remove('map__pin--active');
-        }
+    if (evt.target.dataset.pinIndex || evt.target.parentNode.dataset.pinIndex) {
 
-        var pinTarget = evt.target;
+      checkLastPin();
+
+      var pinTarget = evt.target;
+      pinData = window.pin.objectToPinMap[pinTarget.dataset.pinIndex];
+
+      if (!pinData) {
+        pinTarget = evt.target.parentNode;
         pinData = window.pin.objectToPinMap[pinTarget.dataset.pinIndex];
-
-        if (!pinData) {
-          pinTarget = evt.target.parentNode;
-          pinData = window.pin.objectToPinMap[pinTarget.dataset.pinIndex];
-        }
-
-        pinTarget.classList.add('map__pin--active');
-        lastPin = pinTarget;
-        window.card.render(pinData);
       }
 
-      if (window.card.closeButton) {
-        window.card.closeButton.addEventListener('click', closeCard);
-        document.addEventListener('keydown', onCardEscPress);
-      }
-    };
+      pinTarget.classList.add('map__pin--active');
+      lastPin = pinTarget;
+      window.card.render(pinData);
+    }
+
+    if (window.card.closeButton) {
+      window.card.closeButton.addEventListener('click', closeCard);
+      document.addEventListener('keydown', onCardEscPress);
+    }
   };
-
-  openCard = openCard();
 
   pinsContainer.addEventListener('click', openCard);
 })();

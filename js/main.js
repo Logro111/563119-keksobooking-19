@@ -61,7 +61,7 @@
 
     window.form.setMinPrice();
 
-    window.backend.createHttpRequest(onLoadSuccess, window.errorPopup.showLoadError, window.backend.loadURL, 'GET');
+    window.backend.createHttpRequest(onLoadSuccess, window.errorPopup.showLoad, window.backend.loadURL, 'GET');
   };
 
   var checkPageStatus = function (state, action, evt) {

@@ -2,9 +2,9 @@
 
 (function () {
   var TIMEOUT_IN_MS = 10000;
-
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
   var SAVE_URL = 'https://js.dump.academy/keksobooking';
+
   var statusCodes = {
     OK: 200
   };
