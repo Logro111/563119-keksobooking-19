@@ -53,7 +53,7 @@
     if (priceField.validity.rangeUnderflow) {
       priceField.setCustomValidity('Минимальная цена при заданном типе жилья ( ' + window.card.objHouseTypeToCardField[houseTypeField.value].toLowerCase() + ') - ' + houseTypeToMinPice[houseTypeField.value]);
     } else if (priceField.validity.rangeOverflow) {
-      priceField.setCustomValidity('Максимальная цена' + priceField.getAttribute('max'));
+      priceField.setCustomValidity('Максимальная цена ' + priceField.getAttribute('max'));
     } else {
       priceField.setCustomValidity('');
     }
