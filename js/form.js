@@ -82,17 +82,20 @@
   };
 
   var resetPage = function () {
-    window.main.disable();
     window.pin.clearMap();
     window.card.remove();
     mainMapPin.style.left = window.main.startMainPinPosition.x + 'px';
     mainMapPin.style.top = window.main.startMainPinPosition.y + 'px';
+    form.querySelectorAll('.ad-form__element :invalid').forEach(function (elem) {
+      elem.style.outline = '';
+    });
     form.reset();
     filterForm.reset();
     addressField.value = window.main.disabledAddresValue;
     setMinPrice();
     avatar.src = 'img/muffin-grey.svg';
     housePhoto.removeAttribute('style');
+    window.main.disable();
   };
 
   var onFieldInput = function (evt) {
